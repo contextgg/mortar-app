@@ -1,0 +1,39 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nicokosi/tauri/v2/crates/tauri-config-schema/schema.json",
+  "productName": "Mortar",
+  "version": "0.1.0",
+  "identifier": "gg.ctx.mortar",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "title": "Mortar",
+    "windows": [
+      {
+        "label": "main",
+        "title": "Mortar",
+        "width": 1200,
+        "height": 800,
+        "minWidth": 800,
+        "minHeight": 600
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "plugins": {
+    "shell": {
+      "scope": [
+        {
+          "name": "mortar",
+          "cmd": "mortar",
+          "args": true
+        }
+      ]
+    }
+  }
+}
