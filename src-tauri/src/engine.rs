@@ -5,8 +5,7 @@ use std::path::PathBuf;
 use std::process::Command as StdCommand;
 use tauri::{AppHandle, Manager};
 
-const LATEST_URL: &str =
-    "https://github.com/contextgg/mortar/releases/latest/download/latest.json";
+const API_BASE: &str = "https://api.ctx.gg";
 
 #[derive(Debug, Deserialize)]
 struct LatestManifest {
@@ -62,8 +61,9 @@ pub fn get_engine_path(app: AppHandle) -> Option<String> {
 /// Returns the path to the engine binary.
 #[tauri::command]
 pub async fn check_engine(app: AppHandle) -> Result<String, String> {
-    // Fetch the latest manifest
-    let manifest: LatestManifest = reqwest::get(LATEST_URL)
+    // Fetch the latest release from the API
+    let url = format!("{API_BASE}/api/games/mortar/releases/latest");
+    let manifest: LatestManifest = reqwest::get(&url)
         .await
         .map_err(|e| format!("Failed to check for engine updates: {e}"))?
         .json()
