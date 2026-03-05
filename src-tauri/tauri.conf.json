@@ -36,6 +36,11 @@
     }
   },
   "bundle": {
-    "createUpdaterArtifacts": true
+    "active": true,
+    "createUpdaterArtifacts": "v1Compatible",
+    "icon": [
+      "icons/icon.png",
+      "icons/icon.ico"
+    ]
   }
 }
