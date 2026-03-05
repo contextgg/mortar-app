@@ -7,18 +7,6 @@
     "core:event:default",
     "updater:default",
     "process:allow-restart",
-    "shell:allow-spawn",
-    "shell:allow-stdin-write",
-    "shell:allow-open",
-    {
-      "identifier": "shell:allow-execute",
-      "allow": [
-        {
-          "name": "mortar",
-          "cmd": "mortar",
-          "args": true
-        }
-      ]
-    }
+    "shell:allow-open"
   ]
 }
