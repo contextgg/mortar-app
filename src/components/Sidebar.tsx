@@ -1,13 +1,17 @@
 import { NavLink } from 'react-router-dom';
+import { useAuthStore } from '../lib/store';
 
 const links = [
-  { to: '/maps', label: 'Maps', icon: '🗺' },
-  { to: '/tournaments', label: 'Tournaments', icon: '🏆' },
-  { to: '/profile', label: 'Profile', icon: '👤' },
-  { to: '/settings', label: 'Settings', icon: '⚙' },
+  { to: '/maps', label: 'Maps' },
+  { to: '/tournaments', label: 'Tournaments' },
+  { to: '/profile', label: 'Profile' },
+  { to: '/settings', label: 'Settings' },
 ];
 
 export function Sidebar() {
+  const user = useAuthStore((s) => s.user);
+  const logout = useAuthStore((s) => s.logout);
+
   return (
     <aside className="w-56 bg-gray-900 border-r border-gray-800 flex flex-col">
       <div className="p-4 border-b border-gray-800">
@@ -27,11 +31,29 @@ export function Sidebar() {
               }`
             }
           >
-            <span>{link.icon}</span>
             {link.label}
           </NavLink>
         ))}
       </nav>
+      {user && (
+        <div className="p-3 border-t border-gray-800">
+          <div className="flex items-center gap-2 mb-2">
+            {user.avatar_url && (
+              <img src={user.avatar_url} alt="" className="w-7 h-7 rounded-full" />
+            )}
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-medium text-gray-200 truncate">{user.display_name}</p>
+              <p className="text-xs text-gray-500 truncate">@{user.username}</p>
+            </div>
+          </div>
+          <button
+            onClick={logout}
+            className="w-full text-xs text-gray-500 hover:text-gray-300 transition-colors text-left px-1"
+          >
+            Sign out
+          </button>
+        </div>
+      )}
     </aside>
   );
 }

@@ -1,3 +1,5 @@
+import { getAccessToken } from './auth';
+
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export type MapSummary = {
@@ -40,9 +42,15 @@ export type Tournament = {
 };
 
 async function fetchApi<T>(path: string, options?: RequestInit): Promise<T> {
+  const headers: Record<string, string> = {};
+  const token = await getAccessToken();
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   const res = await fetch(`${API_BASE}${path}`, {
-    credentials: 'include',
     ...options,
+    headers: { ...headers, ...(options?.headers as Record<string, string>) },
   });
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
@@ -64,8 +72,5 @@ export const api = {
     get: (id: string) => fetchApi<Tournament>(`/api/tournaments/${id}`),
     join: (id: string) => fetchApi<{ ok: boolean }>(`/api/tournaments/${id}/join`, { method: 'POST' }),
     leave: (id: string) => fetchApi<{ ok: boolean }>(`/api/tournaments/${id}/leave`, { method: 'POST' }),
-  },
-  auth: {
-    me: () => fetchApi<{ id: string; username: string; display_name: string; avatar_url: string | null }>('/auth/me'),
   },
 };

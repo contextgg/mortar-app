@@ -1,20 +1,25 @@
 import { useState, useEffect } from 'react';
 import { api, type UserProfile } from '../lib/api';
+import { useAuthStore } from '../lib/store';
 
 export function ProfilePage() {
+  const user = useAuthStore((s) => s.user);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.auth.me()
-      .then((user) => api.users.profile(user.username))
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+    api.users.profile(user.username)
       .then(setProfile)
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, []);
+  }, [user]);
 
   if (loading) return <p className="text-gray-500">Loading profile...</p>;
-  if (!profile) return <p className="text-gray-500">Sign in to view your profile.</p>;
+  if (!profile) return <p className="text-gray-500">Could not load profile.</p>;
 
   return (
     <div>

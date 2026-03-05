@@ -10,7 +10,6 @@
     "beforeBuildCommand": "npm run build"
   },
   "app": {
-    "title": "Mortar",
     "windows": [
       {
         "label": "main",
@@ -27,13 +26,7 @@
   },
   "plugins": {
     "shell": {
-      "scope": [
-        {
-          "name": "mortar",
-          "cmd": "mortar",
-          "args": true
-        }
-      ]
+      "open": true
     }
   }
 }

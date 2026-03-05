@@ -1,0 +1,22 @@
+{
+  "identifier": "default",
+  "description": "Default capabilities for the main window",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "core:event:default",
+    "shell:allow-spawn",
+    "shell:allow-stdin-write",
+    "shell:allow-open",
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        {
+          "name": "mortar",
+          "cmd": "mortar",
+          "args": true
+        }
+      ]
+    }
+  ]
+}

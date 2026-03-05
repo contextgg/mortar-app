@@ -1,11 +1,34 @@
+import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Sidebar } from './components/Sidebar';
 import { MapsPage } from './pages/MapsPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { TournamentsPage } from './pages/TournamentsPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { LoginPage } from './pages/LoginPage';
+import { useAuthStore } from './lib/store';
 
 export function App() {
+  const user = useAuthStore((s) => s.user);
+  const loading = useAuthStore((s) => s.loading);
+  const init = useAuthStore((s) => s.init);
+
+  useEffect(() => {
+    init();
+  }, [init]);
+
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-gray-950">
+        <p className="text-gray-500">Loading...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <LoginPage />;
+  }
+
   return (
     <div className="flex h-screen">
       <Sidebar />
