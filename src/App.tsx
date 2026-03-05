@@ -1,5 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { check } from '@tauri-apps/plugin-updater';
+import { relaunch } from '@tauri-apps/plugin-process';
 import { Sidebar } from './components/Sidebar';
 import { MapsPage } from './pages/MapsPage';
 import { ProfilePage } from './pages/ProfilePage';
@@ -12,15 +14,26 @@ export function App() {
   const user = useAuthStore((s) => s.user);
   const loading = useAuthStore((s) => s.loading);
   const init = useAuthStore((s) => s.init);
+  const [updateStatus, setUpdateStatus] = useState<string | null>(null);
 
   useEffect(() => {
     init();
   }, [init]);
 
-  if (loading) {
+  useEffect(() => {
+    check().then(async (update) => {
+      if (update) {
+        setUpdateStatus(`Updating to v${update.version}...`);
+        await update.downloadAndInstall();
+        await relaunch();
+      }
+    }).catch(() => {});
+  }, []);
+
+  if (loading || updateStatus) {
     return (
       <div className="flex h-screen items-center justify-center bg-gray-950">
-        <p className="text-gray-500">Loading...</p>
+        <p className="text-gray-500">{updateStatus || 'Loading...'}</p>
       </div>
     );
   }
