@@ -29,7 +29,7 @@
       "open": true
     },
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEQ4NzZDMjBENjU0MEM0NkQKUldSdHhFQmxEY0oyMkp6aE5ySjNNNk1QcnplelZhdS9hbDZ2L3M1SXc3SEREa1cwQUxDUUdtODIK",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEIwOUVEMzcyNUVGN0U0QUUKUldTdTVQZGVjdE9lc0UzZEhRR2M2eU4rOEJWWkhoZ29UdERlYVhsaksrT1l0cWJ5ODlpeFd2VHgK",
       "endpoints": [
         "https://github.com/contextgg/mortar-app/releases/latest/download/latest.json"
       ]
