@@ -59,6 +59,20 @@ async function fetchApi<T>(path: string, options?: RequestInit): Promise<T> {
   return res.json();
 }
 
+export type MatchmakingStatus = {
+  status: 'idle' | 'queued' | 'matched';
+  position?: number;
+  session?: {
+    id: string;
+    map_slug: string;
+    map_title: string;
+    server_addr: string | null;
+    server_port: number;
+    token: string;
+    server_status: string;
+  };
+};
+
 export const api = {
   maps: {
     list: (q?: string) => fetchApi<MapSummary[]>(`/api/maps${q ? `?q=${encodeURIComponent(q)}` : ''}`),
@@ -72,5 +86,10 @@ export const api = {
     get: (id: string) => fetchApi<Tournament>(`/api/tournaments/${id}`),
     join: (id: string) => fetchApi<{ ok: boolean }>(`/api/tournaments/${id}/join`, { method: 'POST' }),
     leave: (id: string) => fetchApi<{ ok: boolean }>(`/api/tournaments/${id}/leave`, { method: 'POST' }),
+  },
+  matchmaking: {
+    join: () => fetchApi<MatchmakingStatus>('/api/matchmaking/queue', { method: 'POST' }),
+    leave: () => fetchApi<{ ok: boolean }>('/api/matchmaking/queue', { method: 'DELETE' }),
+    status: () => fetchApi<MatchmakingStatus>('/api/matchmaking/queue'),
   },
 };

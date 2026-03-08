@@ -130,12 +130,36 @@ pub async fn check_engine(app: AppHandle) -> Result<String, String> {
     get_engine_path(app).ok_or_else(|| "Engine binary not found after extraction".to_string())
 }
 
-/// Launch the mortar engine with the given map.
+/// Launch the mortar engine with the given map (offline/local mode).
 #[tauri::command]
 pub async fn launch_game(app: AppHandle, map_path: String) -> Result<(), String> {
+    let engine_path = get_engine_path(app.clone()).ok_or("Engine is not installed")?;
+
+    StdCommand::new(&engine_path)
+        .arg("--map")
+        .arg(&map_path)
+        .spawn()
+        .map_err(|e| format!("Failed to launch game: {e}"))?;
+
+    Ok(())
+}
+
+/// Launch the mortar engine connecting to a game server.
+#[tauri::command]
+pub async fn launch_multiplayer(
+    app: AppHandle,
+    server_addr: String,
+    server_port: u16,
+    token: String,
+    map_path: String,
+) -> Result<(), String> {
     let engine_path = get_engine_path(app).ok_or("Engine is not installed")?;
 
     StdCommand::new(&engine_path)
+        .arg("--connect")
+        .arg(format!("{}:{}", server_addr, server_port))
+        .arg("--token")
+        .arg(&token)
         .arg("--map")
         .arg(&map_path)
         .spawn()

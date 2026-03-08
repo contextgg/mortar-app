@@ -1,4 +1,5 @@
 mod engine;
+mod maps;
 
 pub fn run() {
     tauri::Builder::default()
@@ -9,6 +10,10 @@ pub fn run() {
             engine::check_engine,
             engine::get_engine_path,
             engine::launch_game,
+            engine::launch_multiplayer,
+            maps::get_map_rotation,
+            maps::sync_maps,
+            maps::get_map_path,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
